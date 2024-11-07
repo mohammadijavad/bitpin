@@ -6,7 +6,6 @@ import Pagination from "./pagination";
 import { extractCryptoCurrencyType } from "../helper";
 import { typeOfTabs } from "../constants";
 import { useSwipeable } from "react-swipeable";
-import { div } from "framer-motion/client";
 
 export default function Market({ market, totalItems }) {
   const [activeTab, setActiveTab] = useState(typeOfTabs.currency1);
