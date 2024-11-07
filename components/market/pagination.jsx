@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from "react";
-
+import React, { useState, useMemo, useEffect } from "react";
+import useIsMobile from "../hooks/us-is-mobile";
 export default function Pagination({
   totalItems,
   itemsPerPage,
@@ -7,19 +7,19 @@ export default function Pagination({
   currentPage,
   setCurrentPage,
 }) {
+  const isMobile = useIsMobile();
+  const [visibleButtons, setvisibleButtons] = useState(8);
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-
   const visiblePages = useMemo(() => {
     const pages = [];
-    const maxVisibleButtons = 8;
-    const half = Math.floor(maxVisibleButtons / 2);
+    const half = Math.floor(visibleButtons / 2);
     let start = Math.max(1, currentPage - half);
     let end = Math.min(totalPages, currentPage + half);
 
     if (currentPage <= half) {
-      end = Math.min(totalPages, maxVisibleButtons);
+      end = Math.min(totalPages, visibleButtons);
     } else if (currentPage + half >= totalPages) {
-      start = Math.max(1, totalPages - maxVisibleButtons + 1);
+      start = Math.max(1, totalPages - visibleButtons + 1);
     }
 
     for (let i = start; i <= end; i++) {
@@ -27,12 +27,15 @@ export default function Pagination({
     }
 
     return pages;
-  }, [currentPage, totalPages]);
+  }, [currentPage, totalPages, visibleButtons]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
     onPageChange(page);
   };
+  useEffect(() => {
+    setvisibleButtons(isMobile ? 3 : 8);
+  }, [isMobile]);
 
   return (
     <div className="mt-4 w-full flex items-center justify-center select-none">
