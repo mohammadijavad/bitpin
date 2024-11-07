@@ -5,7 +5,7 @@ import ThemeSwitch from "./theme-switch";
 export default function Header() {
   return (
     <header className="w-full h-16">
-      <div className="flex justify-between items-center container h-full mx-auto">
+      <div className="flex justify-between items-center container h-full mx-auto mt-3">
         <div>
           <Image src={logo} alt="bit pin" width={127} height={64} />
         </div>
