@@ -2,34 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
-
-
-.counters {
-    display: flex;
+@keyframes slideLeft {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
   }
-  
-  .counter {
-    position: relative;
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
 
+@keyframes slideRight {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
   }
-  .counter > div {
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    transition: -webkit-transform 1.5s  ease-in-out;
-    transition: transform 1.5s  ease-in-out;
-    transition: transform 1.5s  ease-in-out, -webkit-transform 1.5s  ease-in-out;
-    -webkit-transform: translateY(0);
-            transform: translateY(0);
-    line-height: 1;
+  to {
+    transform: translateX(0);
+    opacity: 1;
   }
-  .counter > p p {
-    flex: 0 0 100%;
-    height: 100%;
-  }
-  .counter:nth-child(1) > param {
-    transition-delay: 1s;
-  }
+}
+
+.slide-left {
+  animation: slideLeft 0.3s ease forwards;
+}
+
+.slide-right {
+  animation: slideRight 0.3s ease forwards;
+}
+
