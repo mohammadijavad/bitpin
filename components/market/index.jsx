@@ -10,9 +10,19 @@ import { useSwipeable } from "react-swipeable";
 export default function Market({ market, totalItems }) {
   const [activeTab, setActiveTab] = useState(typeOfTabs.currency1);
   const [currentPage, setCurrentPage] = useState(1);
-  const [followList, setFollowList] = useState([]);
   const [swipeDirection, setSwipeDirection] = useState("");
-
+  const actionTabs = [
+    {
+      action: (tabName) => setActiveTab(tabName),
+      title: "پایه تومان",
+      tabName: typeOfTabs.currency1,
+    },
+    {
+      action: (tabName) => setActiveTab(tabName),
+      title: "پایه تتر",
+      tabName: typeOfTabs.currency2,
+    },
+  ];
   const cryptosUsdtTypeList = extractCryptoCurrencyType(market, "usdt");
   const cryptosIrttTypeList = extractCryptoCurrencyType(market, "irt");
 
@@ -43,7 +53,6 @@ export default function Market({ market, totalItems }) {
   const activeMarketTabObj = {
     [typeOfTabs.currency1]: cryptosIrttTypeList,
     [typeOfTabs.currency2]: cryptosUsdtTypeList,
-    [typeOfTabs.follow]: followList,
   };
   const marketList = activeMarketTabObj[activeTab];
 
@@ -55,7 +64,7 @@ export default function Market({ market, totalItems }) {
 
   return (
     <div className="md:w-10/12 container mx-auto" {...swipeHandlers}>
-      <Tab setActiveTab={setActiveTab} activeTab={activeTab} />
+      <Tab actionTabs={actionTabs} activeTab={activeTab} />
 
       <div
         className={`market-content ${swipeDirection === "left" ? "slide-left" : "slide-right"}`}
