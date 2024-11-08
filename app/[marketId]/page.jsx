@@ -69,11 +69,7 @@ const MarketData = ({ params }) => {
     [typeOfTransactionTabs.match]: matches,
   };
 
-  if (
-    sellOrders.length === 0 ||
-    buyOrders.length === 0 ||
-    matches.length === 0
-  ) {
+  if (buyOrders.length === 0) {
     return <h1>loading ...</h1>;
   }
 

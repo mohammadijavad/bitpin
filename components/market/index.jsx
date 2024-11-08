@@ -26,11 +26,7 @@ export default function Market({ market, totalItems }) {
   const cryptosUsdtTypeList = extractCryptoCurrencyType(market, "usdt");
   const cryptosIrttTypeList = extractCryptoCurrencyType(market, "irt");
 
-  const tabOrder = [
-    typeOfTabs.follow,
-    typeOfTabs.currency1,
-    typeOfTabs.currency2,
-  ];
+  const tabOrder = [typeOfTabs.currency1, typeOfTabs.currency2];
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => {
