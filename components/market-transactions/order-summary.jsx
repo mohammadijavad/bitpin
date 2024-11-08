@@ -63,7 +63,7 @@ function OrderSummary({ orders, isBuyactiveTab }) {
 
   return (
     <div className="w-full h-full flex items-center justify-center">
-      <div className="w-full md:w-2/3 md:h-2/3 border rounded-md overflow-hidden px-2 mt-5 md:mt-0 pb-4 md:pb-0">
+      <div className="w-full md:w-2/3 md:h-2/3 border border-black-dark dark:border-white-stone rounded-md overflow-hidden px-2 mt-5 md:mt-0 pb-4 md:pb-0">
         <div className="mt-4">
           <label htmlFor="number-input" className="py-2 text-sm">
             مقدار
