@@ -3,10 +3,8 @@ import { calculateSummary } from "@/components/helper";
 import { typeOfTransactionTabs } from "@/components/constants";
 function TransactionSummary({ activeTabData, activeTab }) {
   const activeTabType = typeOfTransactionTabs.buy === activeTab;
-  console.log(activeTab);
   if (activeTabData.length === 0) return null;
   const summary = calculateSummary(activeTabData);
-  console.log(summary);
   return (
     <div className="mt-4 flex items-center justify-start gap-4">
       <div>

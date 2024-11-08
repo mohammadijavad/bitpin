@@ -4,15 +4,13 @@ import { typeOfTransactionTabs } from "@/components/constants";
 import Tab from "@/components/market/tab";
 import CryptoTabTitle from "@/components/market/crypto-tab-title";
 import MarketTransactionList from "@/components/market-transactions/market-transaction-list";
-
 import TransactionSummary from "@/components/market-transactions/transaction-summary";
+import OrderSummary from "@/components/market-transactions/order-summary";
 const MarketData = ({ params }) => {
   const [activeTab, setActiveTab] = useState(typeOfTransactionTabs.buy);
   const [sellOrders, setSellOrders] = useState([]);
   const [buyOrders, setBuyOrders] = useState([]);
   const [matches, setMatches] = useState([]);
-  const [percentage, setPercentage] = useState(0);
-  const [calculationResult, setCalculationResult] = useState(null);
   const actionTabs = [
     {
       tabName: typeOfTransactionTabs.buy,
@@ -65,53 +63,6 @@ const MarketData = ({ params }) => {
     return () => clearInterval(intervalId);
   }, [params.marketId]);
 
-  const handleCalculation = () => {
-    const totalRemainSell = sellOrders.reduce(
-      (acc, order) => acc + parseFloat(order.remain),
-      0
-    );
-    const totalValueSell = sellOrders.reduce(
-      (acc, order) => acc + parseFloat(order.value),
-      0
-    );
-    const averagePriceSell =
-      sellOrders.reduce(
-        (acc, order) =>
-          acc + parseFloat(order.price) * parseFloat(order.remain),
-        0
-      ) / totalRemainSell;
-
-    const totalRemainBuy = buyOrders.reduce(
-      (acc, order) => acc + parseFloat(order.remain),
-      0
-    );
-    const totalValueBuy = buyOrders.reduce(
-      (acc, order) => acc + parseFloat(order.value),
-      0
-    );
-    const averagePriceBuy =
-      buyOrders.reduce(
-        (acc, order) =>
-          acc + parseFloat(order.price) * parseFloat(order.remain),
-        0
-      ) / totalRemainBuy;
-
-    const totalRemain = (totalRemainSell + totalRemainBuy) * (percentage / 100);
-    const averagePrice = (averagePriceSell + averagePriceBuy) / 2;
-    const totalValue = totalRemain * averagePrice;
-
-    // جلوگیری از NaN
-    if (!isNaN(totalRemain) && !isNaN(averagePrice) && !isNaN(totalValue)) {
-      setCalculationResult({
-        totalRemain,
-        averagePrice,
-        totalValue,
-      });
-    } else {
-      setCalculationResult(null);
-    }
-  };
-
   const activeTabList = {
     [typeOfTransactionTabs.sell]: sellOrders,
     [typeOfTransactionTabs.buy]: buyOrders,
@@ -129,39 +80,56 @@ const MarketData = ({ params }) => {
   return (
     <div className="container mx-auto p-4">
       <Tab actionTabs={actionTabs} activeTab={activeTab} />
-      <div className="grid md:grid-cols-6 gap-4 mt-6">
-        <CryptoTabTitle title="قیمت" className="pr-2 text-xs md:text-base" />
-        <CryptoTabTitle
-          title="مقدار"
-          className="text-xs md:text-base text-center md:text-right"
-        />
+      <div className="grid md:grid-cols-3">
+        <div className="col-span-2">
+          <div className="grid md:grid-cols-6 gap-4 mt-6">
+            <CryptoTabTitle
+              title="قیمت"
+              className="pr-2 text-xs md:text-base"
+            />
+            <CryptoTabTitle
+              title="مقدار"
+              className="text-xs md:text-base text-center md:text-right"
+            />
+            {activeTab !== typeOfTransactionTabs.match && (
+              <CryptoTabTitle
+                title="کل"
+                className="text-xs md:text-base text-center md:text-right"
+              />
+            )}
+            {activeTab === typeOfTransactionTabs.match && (
+              <CryptoTabTitle
+                title="زمان"
+                className="text-xs md:text-base text-center md:text-right"
+              />
+            )}
+          </div>
+
+          <MarketTransactionList
+            transactionList={activeTabList[activeTab]}
+            activeTab={activeTab}
+            isMatchTabActive={activeTab === typeOfTransactionTabs.match}
+          />
+          {activeTab !== typeOfTransactionTabs.match && (
+            <TransactionSummary
+              activeTabData={
+                activeTab === typeOfTransactionTabs.buy ? buyOrders : sellOrders
+              }
+              activeTab={activeTab}
+            />
+          )}
+        </div>
         {activeTab !== typeOfTransactionTabs.match && (
-          <CryptoTabTitle
-            title="کل"
-            className="text-xs md:text-base text-center md:text-right"
-          />
-        )}
-        {activeTab === typeOfTransactionTabs.match && (
-          <CryptoTabTitle
-            title="زمان"
-            className="text-xs md:text-base text-center md:text-right"
-          />
+          <div>
+            <OrderSummary
+              orders={
+                activeTab === typeOfTransactionTabs.buy ? buyOrders : sellOrders
+              }
+              isBuyactiveTab={activeTab === typeOfTransactionTabs.buy}
+            />
+          </div>
         )}
       </div>
-
-      <MarketTransactionList
-        transactionList={activeTabList[activeTab]}
-        activeTab={activeTab}
-        isMatchTabActive={activeTab === typeOfTransactionTabs.match}
-      />
-      {activeTab !== typeOfTransactionTabs.match && (
-        <TransactionSummary
-          activeTabData={
-            activeTab === typeOfTransactionTabs.buy ? buyOrders : sellOrders
-          }
-          activeTab={activeTab}
-        />
-      )}
     </div>
   );
 };
