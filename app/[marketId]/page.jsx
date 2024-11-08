@@ -82,25 +82,25 @@ const MarketData = ({ params }) => {
       <Tab actionTabs={actionTabs} activeTab={activeTab} />
       <div className="grid grid-cols-1 md:grid-cols-3">
         <div className="col-span-2">
-          <div className="grid md:grid-cols-6 gap-4 mt-6">
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-4 mt-6">
             <CryptoTabTitle
               title="قیمت"
               className="pr-2 text-xs md:text-base"
             />
             <CryptoTabTitle
               title="مقدار"
-              className="text-xs md:text-base text-center md:text-right"
+              className="text-xs md:text-base text-right"
             />
             {activeTab !== typeOfTransactionTabs.match && (
               <CryptoTabTitle
                 title="کل"
-                className="text-xs md:text-base text-center md:text-right"
+                className="text-xs md:text-base text-right"
               />
             )}
             {activeTab === typeOfTransactionTabs.match && (
               <CryptoTabTitle
                 title="زمان"
-                className="text-xs md:text-base text-center md:text-right"
+                className="text-xs md:text-base text-right"
               />
             )}
           </div>
