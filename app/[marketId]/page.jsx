@@ -80,7 +80,7 @@ const MarketData = ({ params }) => {
   return (
     <div className="container mx-auto p-4">
       <Tab actionTabs={actionTabs} activeTab={activeTab} />
-      <div className="grid md:grid-cols-3">
+      <div className="grid grid-cols-1 md:grid-cols-3">
         <div className="col-span-2">
           <div className="grid md:grid-cols-6 gap-4 mt-6">
             <CryptoTabTitle
@@ -120,7 +120,7 @@ const MarketData = ({ params }) => {
           )}
         </div>
         {activeTab !== typeOfTransactionTabs.match && (
-          <div>
+          <div className="col-span-3 md:col-span-1">
             <OrderSummary
               orders={
                 activeTab === typeOfTransactionTabs.buy ? buyOrders : sellOrders

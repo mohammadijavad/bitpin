@@ -7,26 +7,26 @@ function TransactionSummary({ activeTabData, activeTab }) {
   const summary = calculateSummary(activeTabData);
   return (
     <div className="mt-4 flex items-center justify-start gap-4">
-      <div>
-        <span>مجموع باقی‌مانده: </span>
+      <div className="flex flex-col items-center gap-2 md:flex-row">
+        <span className="text-sm">مجموع باقی‌مانده: </span>
         <span
-          className={`${activeTabType ? "text-red-500" : "text-green-light"}`}
+          className={`${activeTabType ? "text-red-500" : "text-green-light"} text-sm`}
         >
           {summary?.totalRemain}
         </span>
       </div>
-      <div>
-        <span>مجموع ارزش: </span>
+      <div className="flex flex-col items-center gap-2 md:flex-row">
+        <span className="text-sm">مجموع ارزش: </span>
         <span
-          className={`${activeTabType ? "text-red-500" : "text-green-light"}`}
+          className={`${activeTabType ? "text-red-500" : "text-green-light"} text-sm`}
         >
           {summary?.totalValue}
         </span>
       </div>
-      <div>
-        <span>میانگین وزنی قیمت: </span>
+      <div className="flex flex-col items-center gap-2 md:flex-row">
+        <span className="text-sm">میانگین وزنی قیمت: </span>
         <span
-          className={`${activeTabType ? "text-red-500" : "text-green-light"}`}
+          className={`${activeTabType ? "text-red-500" : "text-green-light"} text-sm`}
         >
           {summary?.weightedAveragePrice}
         </span>
