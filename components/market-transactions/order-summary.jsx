@@ -3,9 +3,9 @@ import React, { useEffect, useMemo, useState } from "react";
 function OrderSummary({ orders, isBuyactiveTab }) {
   const [percentage, setPercentage] = useState("");
   const [summary, setSummary] = useState({
-    totalRemain: "0.000000",
-    weightedAveragePrice: "0.00",
-    totalValue: "0.00",
+    totalRemain: "0",
+    weightedAveragePrice: "0",
+    totalValue: "0",
   });
 
   function handleChangePercentage(value) {
@@ -19,7 +19,7 @@ function OrderSummary({ orders, isBuyactiveTab }) {
     () => (orders, percentage) => {
       const totalRemain = orders.reduce(
         (sum, order) => sum + parseFloat(order.remain || 0),
-        0
+        0,
       );
       const targetRemain = (percentage / 100) * totalRemain;
 
@@ -49,12 +49,14 @@ function OrderSummary({ orders, isBuyactiveTab }) {
         accumulatedRemain > 0 ? weightedPriceSum / accumulatedRemain : 0;
 
       return {
-        totalRemain: accumulatedRemain.toFixed(6),
-        weightedAveragePrice: weightedAveragePrice.toFixed(2),
-        totalValue: totalValue.toFixed(2),
+        totalRemain: accumulatedRemain ? accumulatedRemain.toFixed(6) : 0,
+        weightedAveragePrice: accumulatedRemain
+          ? weightedAveragePrice.toFixed(2)
+          : 0,
+        totalValue: accumulatedRemain ? totalValue.toFixed(2) : 0,
       };
     },
-    []
+    [],
   );
 
   useEffect(() => {

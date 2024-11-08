@@ -21,7 +21,7 @@ function MarketTransactionList({
           key={transaction.value + activeTab}
           className="grid grid-cols-3 md:grid-cols-6 hover:bg-white-taupe py-3 transition duration-300 cursor-pointer border-b border-b-gray-300 select-none px-2 md:px-0"
         >
-          <div className={`${priceClassName}`}>
+          <div className={`${priceClassName} text-sm md:text-base`}>
             {formatNumberWithCommas(new Decimal(transaction.price))}
           </div>
 

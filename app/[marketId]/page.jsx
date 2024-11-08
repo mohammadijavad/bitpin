@@ -1,11 +1,11 @@
 "use client";
 import React, { useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import { typeOfTransactionTabs } from "@/components/constants";
 import Tab from "@/components/market/tab";
 import CryptoTabTitle from "@/components/market/crypto-tab-title";
 import MarketTransactionList from "@/components/market-transactions/market-transaction-list";
 import useMarketData from "@/components/hooks/use-market-data";
-import dynamic from "next/dynamic";
 
 const TransactionSummary = dynamic(
   () => import("@/components/market-transactions/transaction-summary"),
