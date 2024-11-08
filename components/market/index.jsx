@@ -1,50 +1,47 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useCallback } from "react";
+import dynamic from "next/dynamic";
 import Tab from "./tab";
 import MarketContainer from "./market-container";
-import Pagination from "./pagination";
-import { extractCryptoCurrencyType } from "../helper";
-import { typeOfTabs } from "../constants";
-import { useSwipeable } from "react-swipeable";
+import { extractCryptoCurrencyType } from "@/components/helper";
+import { typeOfTabs } from "@/components/constants";
+import useSwipeNavigation from "@/components/hooks/use-swipe-navigation";
 
-export default function Market({ market, totalItems }) {
+const Pagination = dynamic(() => import("./pagination"));
+
+export default function Market({ market }) {
   const [activeTab, setActiveTab] = useState(typeOfTabs.currency1);
   const [currentPage, setCurrentPage] = useState(1);
   const [swipeDirection, setSwipeDirection] = useState("");
+  const swipeHandlers = useSwipeNavigation(activeTab, setActiveTab);
+
+  //avoid re-create new functionality for change tab
+  const handleTabChange = useCallback((tabName) => {
+    setActiveTab(tabName);
+  }, []);
+
   const actionTabs = [
     {
-      action: (tabName) => setActiveTab(tabName),
+      action: handleTabChange,
       title: "پایه تومان",
       tabName: typeOfTabs.currency1,
     },
     {
-      action: (tabName) => setActiveTab(tabName),
+      action: handleTabChange,
       title: "پایه تتر",
       tabName: typeOfTabs.currency2,
     },
   ];
-  const cryptosUsdtTypeList = extractCryptoCurrencyType(market, "usdt");
-  const cryptosIrttTypeList = extractCryptoCurrencyType(market, "irt");
 
-  const tabOrder = [typeOfTabs.currency1, typeOfTabs.currency2];
-
-  const swipeHandlers = useSwipeable({
-    onSwipedLeft: () => {
-      const currentIndex = tabOrder.indexOf(activeTab);
-      if (currentIndex > 0) {
-        setActiveTab(tabOrder[currentIndex - 1]);
-        setSwipeDirection("left");
-      }
-    },
-    onSwipedRight: () => {
-      const currentIndex = tabOrder.indexOf(activeTab);
-      if (currentIndex < tabOrder.length - 1) {
-        setActiveTab(tabOrder[currentIndex + 1]);
-        setSwipeDirection("right");
-      }
-    },
-    trackMouse: false,
-  });
+  //if market change to execute check cryptos money type
+  const cryptosUsdtTypeList = useMemo(
+    () => extractCryptoCurrencyType(market, "usdt"),
+    [market]
+  );
+  const cryptosIrttTypeList = useMemo(
+    () => extractCryptoCurrencyType(market, "irt"),
+    [market]
+  );
 
   const activeMarketTabObj = {
     [typeOfTabs.currency1]: cryptosIrttTypeList,
@@ -52,7 +49,7 @@ export default function Market({ market, totalItems }) {
   };
   const marketList = activeMarketTabObj[activeTab];
 
-  const paginatedMarket = useMemo(() => {
+  const currentPageMarketData = useMemo(() => {
     const start = (currentPage - 1) * 10;
     const end = start + 10;
     return marketList.slice(start, end);
@@ -65,7 +62,10 @@ export default function Market({ market, totalItems }) {
       <div
         className={`market-content ${swipeDirection === "left" ? "slide-left" : "slide-right"}`}
       >
-        <MarketContainer cryptos={paginatedMarket} activeTab={activeTab} />
+        <MarketContainer
+          cryptos={currentPageMarketData}
+          activeTab={activeTab}
+        />
       </div>
 
       {marketList.length > 10 && (

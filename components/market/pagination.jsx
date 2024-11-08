@@ -1,5 +1,6 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import useIsMobile from "../hooks/us-is-mobile";
+
 export default function Pagination({
   totalItems,
   itemsPerPage,
@@ -8,7 +9,7 @@ export default function Pagination({
   setCurrentPage,
 }) {
   const isMobile = useIsMobile();
-  const [visibleButtons, setvisibleButtons] = useState(8);
+  const [visibleButtons, setVisibleButtons] = useState(8);
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const visiblePages = useMemo(() => {
     const pages = [];
@@ -34,7 +35,7 @@ export default function Pagination({
     onPageChange(page);
   };
   useEffect(() => {
-    setvisibleButtons(isMobile ? 3 : 8);
+    setVisibleButtons(isMobile ? 3 : 8);
   }, [isMobile]);
 
   return (
